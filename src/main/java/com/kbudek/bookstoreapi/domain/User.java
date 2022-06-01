@@ -1,21 +1,23 @@
 package com.kbudek.bookstoreapi.domain;
 
+import java.util.UUID;
+
 public class User {
-    private Integer user_id;
+    private UUID user_id;
     private String email;
     private String password;
 
-    public User(Integer user_id, String email, String password) {
+    public User(UUID user_id, String email, String password) {
         this.user_id = user_id;
         this.email = email;
         this.password = password;
     }
 
-    public Integer getUser_id() {
+    public UUID getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(Integer user_id) {
+    public void setUser_id(UUID user_id) {
         this.user_id = user_id;
     }
 

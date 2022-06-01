@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/bookstore")
@@ -20,20 +21,26 @@ public class UserResource {
     @Autowired
     UserService userService;
 
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> loginUser(@RequestBody Map<String, Object> userMap) {
+        String email = (String) userMap.get("email");
+        String password = (String) userMap.get("password");
+        User user = userService.validateUser(email, password);
+        Map<String, String> map = new HashMap<>();
+        map.put("message", "Login successful");
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody Map<String, Object> userMap) {
-        System.out.println("Opened register\n");
 
-        String user_id = (String) userMap.get("user_id");
+        UUID user_id = UUID.randomUUID();
         String email = (String) userMap.get("email");
         String password = (String) userMap.get("password");
 
-        System.out.println("Right before registering. {" + user_id + ", " + email + ", " + password);
         User user = userService.registerUser(user_id, email, password);
-        System.out.println("Right after registering");
         Map<String, String> map = new HashMap<>();
         map.put("message", "registered successfully");
-        System.out.println("Returning success\n");
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }
