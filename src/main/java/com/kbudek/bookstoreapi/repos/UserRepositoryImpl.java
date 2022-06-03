@@ -1,22 +1,22 @@
-package com.kbudek.bookstoreapi.repos;
+    package com.kbudek.bookstoreapi.repos;
 
-import com.kbudek.bookstoreapi.domain.User;
-import com.kbudek.bookstoreapi.exceptions.BSAuthException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.stereotype.Repository;
+    import com.kbudek.bookstoreapi.domain.User;
+    import com.kbudek.bookstoreapi.exceptions.BSAuthException;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.dao.EmptyResultDataAccessException;
+    import org.springframework.jdbc.core.JdbcTemplate;
+    import org.springframework.jdbc.core.RowMapper;
+    import org.springframework.jdbc.support.GeneratedKeyHolder;
+    import org.springframework.jdbc.support.KeyHolder;
+    import org.springframework.security.crypto.bcrypt.BCrypt;
+    import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.util.UUID;
+    import java.sql.PreparedStatement;
+    import java.sql.Statement;
+    import java.util.UUID;
 
-@Repository
-public class UserRepositoryImpl implements UserRepository {
+    @Repository
+    public class UserRepositoryImpl implements UserRepository {
 
     private static final String SQL_CREATE = "INSERT INTO bs_users(USER_ID, EMAIL, PASSWORD) VALUES(?, ?, ?)";
     private static final String SQL_COUNT_BY_EMAIL = "SELECT COUNT(*) FROM bs_users WHERE email = ?";
@@ -47,19 +47,20 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User findByEmailAndPassword(String email, String password) throws BSAuthException {
-         try {
-             User user = jdbcTemplate.queryForObject(SQL_FIND_BY_EMAIL, userRowMapper, email);
-             if(!password.equals(user.getPassword()))
-                 throw new BSAuthException("Invalid email or password.");
-             return user;
-         } catch(EmptyResultDataAccessException e) {
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(10));
+        try {
+            User user = jdbcTemplate.queryForObject(SQL_FIND_BY_EMAIL, userRowMapper, email);
+            if(!hashedPassword.equals(user.getPassword()))
+                throw new BSAuthException("Invalid email or password.");
+            return user;
+        } catch(EmptyResultDataAccessException e) {
             throw new BSAuthException("Invalid email or password.");
-         }
+        }
     }
 
     @Override
     public Integer getCountByEmail(String email) {
-         return jdbcTemplate.queryForObject(SQL_COUNT_BY_EMAIL, Integer.class, email);
+        return jdbcTemplate.queryForObject(SQL_COUNT_BY_EMAIL, Integer.class, email);
     }
 
     @Override
@@ -68,8 +69,8 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     final private RowMapper<User> userRowMapper = ((rs, rowNum) -> {
-       return new User((UUID) rs.getObject("USER_ID"),
+        return new User((UUID) rs.getObject("USER_ID"),
                rs.getString("EMAIL"),
                rs.getString("PASSWORD"));
-    });
-}
+        });
+    }

@@ -4,6 +4,12 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Secrets or not important for project value
+*mvnw*
+*.sql
+*.properties
+.mvn*
+
 ### STS ###
 .apt_generated
 .classpath
