@@ -47,10 +47,9 @@
 
     @Override
     public User findByEmailAndPassword(String email, String password) throws BSAuthException {
-        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(10));
         try {
             User user = jdbcTemplate.queryForObject(SQL_FIND_BY_EMAIL, userRowMapper, email);
-            if(!hashedPassword.equals(user.getPassword()))
+            if(!BCrypt.checkpw(password, user.getPassword()))
                 throw new BSAuthException("Invalid email or password.");
             return user;
         } catch(EmptyResultDataAccessException e) {
