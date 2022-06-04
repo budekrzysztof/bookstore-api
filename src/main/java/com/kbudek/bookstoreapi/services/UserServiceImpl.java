@@ -24,8 +24,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User
-    registerUser(UUID user_id, String email, String password) throws BSAuthException {
+    public User registerUser(UUID user_id, String email, String password) throws BSAuthException {
         Pattern pattern = Pattern.compile("^(.+)@(.+)$");
         if(email != null) email = email.toLowerCase();
         if(!pattern.matcher(email).matches())
