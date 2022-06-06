@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -17,18 +18,19 @@ public class BookResource {
 
     @Autowired
     BookService bookService;
-    
+
 
     @GetMapping("")
-    public String getAllBooks(HttpServletRequest request) {
+    public ResponseEntity<List<Book>> getAllBooks(HttpServletRequest request) {
         UUID user_id = (UUID) UUID.fromString((String) request.getAttribute("user_id"));
-        return "Authenticated! User id: " + user_id; // this one returns correctly
+        List<Book> books = bookService.getAllBooks(user_id);
+        return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
-    @PostMapping("")
+    @PostMapping("/add")
     public ResponseEntity<Book> addBook(HttpServletRequest request,
                                         @RequestBody Map<String, Object> bookMap) {
-        System.out.println(;request.getRemoteAddr().toString()
+        //System.out.println("Caller ip: " + request.getRemoteAddr().toString());
 
         UUID user_id = UUID.fromString((String) request.getAttribute("user_id"));
         UUID author_id = UUID.fromString((String) bookMap.get("author_id"));
