@@ -1,6 +1,7 @@
 package com.kbudek.bookstoreapi.repos;
 
 import com.kbudek.bookstoreapi.domain.Book;
+import com.kbudek.bookstoreapi.exceptions.BSAuthException;
 import com.kbudek.bookstoreapi.exceptions.BSBadRequestException;
 import com.kbudek.bookstoreapi.exceptions.BSResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +21,14 @@ public class BookRepositoryImpl implements BookRepository {
 
     private static final String SQL_CREATE = "INSERT INTO bs_books (isbn, author_id, title, description, publish_year, publisher, lang, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_FIND_BY_ISBN = "SELECT * FROM bs_books WHERE isbn=?";
-            /*
-            "SELECT b.isbn, " +
-            "b.author_id, b.title, b.description, b.publish_year, b.publisher, " +
-            "b.lang, b.price, COALESCE(SUM(o.amount), 0) total_orders FROM " +
-            "bs_books b RIGHT OUTER JOIN bs_orders o on b.isbn = o.isbn WHERE " +
-            "o.user_id = ? AND b.isbn = ? GROUP BY b.isbn";
-             */
+    private static final String SQL_FIND_ALL = "SELECT * FROM bs_books";
 
     @Autowired
     JdbcTemplate jdbcTemplate;
 
     @Override
     public List<Book> findAll(UUID user_id) throws BSResourceNotFoundException {
-        return null;
+        return jdbcTemplate.query(SQL_FIND_ALL, bookRowMapper);
     }
 
     @Override
