@@ -20,11 +20,19 @@ public class BookResource {
     BookService bookService;
 
 
-    @GetMapping("")
+    @GetMapping("/all")
     public ResponseEntity<List<Book>> getAllBooks(HttpServletRequest request) {
         UUID user_id = (UUID) UUID.fromString((String) request.getAttribute("user_id"));
         List<Book> books = bookService.getAllBooks(user_id);
         return new ResponseEntity<>(books, HttpStatus.OK);
+    }
+
+    @GetMapping("/{isbn}")
+    public ResponseEntity<Book> getBookByIsbn(HttpServletRequest request,
+                                              @PathVariable("isbn") String isbn) {
+        UUID user_id = (UUID) UUID.fromString((String) request.getAttribute("user_id"));
+        Book book = bookService.getBookByIsbn(user_id, isbn);
+        return new ResponseEntity<>(book, HttpStatus.OK);
     }
 
     @PostMapping("/add")
