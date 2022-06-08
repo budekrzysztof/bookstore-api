@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
             throw new BSAuthException("Invalid email format");
         Integer count = userRepository.getCountByEmail(email);
         if(count > 0)
-            throw new BSAuthException("Email address  already exists");
+            throw new BSAuthException("Email address has already been used");
         return userRepository.create(user_id, email, password);
     }
 }

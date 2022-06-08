@@ -13,8 +13,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Key;
-import java.util.UUID;
+import java.nio.charset.StandardCharsets;
 
 public class AuthFilter extends GenericFilterBean {
 
@@ -29,9 +28,11 @@ public class AuthFilter extends GenericFilterBean {
             if(authHeaderArr.length > 1 && authHeaderArr[1] != null) {
                 String token = authHeaderArr[1].replaceAll(" ", "").trim();
                 try {
-                    Claims claims = Jwts.parser().setSigningKey(Constants.API_SECRET_KEY)
-                            .parseClaimsJws(token).getBody();
-
+                    Claims claims = Jwts.parserBuilder()
+                            .setSigningKey(Constants.API_SECRET_KEY.getBytes(StandardCharsets.UTF_8))
+                            .build()
+                            .parseClaimsJws(token)
+                            .getBody();
                     httpRequest.setAttribute("user_id", claims.get("user_id").toString().trim());
                 } catch (Exception e) {
                     httpResponse.sendError(HttpStatus.FORBIDDEN.value(), "Invalid or expired token.");
