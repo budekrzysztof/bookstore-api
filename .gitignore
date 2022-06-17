@@ -9,6 +9,8 @@ target/
 *.sql
 *.properties
 .mvn*
+Constants.java
+*.DS_Store
 
 ### STS ###
 .apt_generated

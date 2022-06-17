@@ -20,17 +20,27 @@ public class BookResource {
     BookService bookService;
 
 
-    @GetMapping("")
+    @GetMapping("/all")
     public ResponseEntity<List<Book>> getAllBooks(HttpServletRequest request) {
         UUID user_id = (UUID) UUID.fromString((String) request.getAttribute("user_id"));
         List<Book> books = bookService.getAllBooks(user_id);
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
+    @GetMapping("/{isbn}")
+    public ResponseEntity<Book> getBookByIsbn(HttpServletRequest request,
+                                              @PathVariable("isbn") String isbn) {
+        UUID user_id = (UUID) UUID.fromString((String) request.getAttribute("user_id"));
+        Book book = bookService.getBookByIsbn(user_id, isbn);
+        return new ResponseEntity<>(book, HttpStatus.OK);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Book> addBook(HttpServletRequest request,
                                         @RequestBody Map<String, Object> bookMap) {
-        //System.out.println("Caller ip: " + request.getRemoteAddr().toString());
+        
+        // For printing caller's id but since I only run this locally then it doesn't really works out :(
+        // System.out.println("Caller ip: " + request.getRemoteAddr().toString());
 
         UUID user_id = UUID.fromString((String) request.getAttribute("user_id"));
         UUID author_id = UUID.fromString((String) bookMap.get("author_id"));
