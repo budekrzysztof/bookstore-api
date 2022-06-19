@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +51,8 @@ public class UserResource {
 
     private Map<String, String> generateJWT(User user) {
         long timestamp = System.currentTimeMillis();
-        String token = Jwts.builder().signWith(SignatureAlgorithm.HS256, Constants.API_SECRET_KEY)
+        String token = Jwts.builder()
+                .signWith(SignatureAlgorithm.HS256, Constants.API_SECRET_KEY.getBytes(StandardCharsets.UTF_8))
                 .setIssuedAt(new Date(timestamp))
                 .setExpiration(new Date(timestamp + Constants.TOKEN_VALIDITY))
                 .claim("user_id", user.getUser_id())

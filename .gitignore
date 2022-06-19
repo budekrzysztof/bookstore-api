@@ -9,7 +9,7 @@ target/
 *.sql
 *.properties
 .mvn*
-Constants.java
+*Constants*
 *.DS_Store
 
 ### STS ###
