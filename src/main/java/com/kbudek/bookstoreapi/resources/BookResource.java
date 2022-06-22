@@ -38,8 +38,10 @@ public class BookResource {
 
     @PostMapping("/add")
     public ResponseEntity<Book> addBook(HttpServletRequest request,
-                                        @RequestBody Map<String, Object> bookMap) {
-        
+                                        @RequestBody Map<String,
+                                        Object> bookMap) {
+
+
         // For printing caller's id but since I only run this locally then it doesn't really works out :(
         // System.out.println("Caller ip: " + request.getRemoteAddr().toString());
 
