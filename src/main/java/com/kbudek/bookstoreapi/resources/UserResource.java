@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/bookstore")
@@ -39,11 +36,10 @@ public class UserResource {
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody Map<String, Object> userMap) {
 
-        UUID user_id = UUID.randomUUID();
         String email = (String) userMap.get("email");
         String password = (String) userMap.get("password");
 
-        User user = userService.registerUser(user_id, email, password);
+        User user = userService.registerUser(email, password);
         Map<String, String> map = new HashMap<>();
         map.put("message", "registered successfully");
         return new ResponseEntity<>(generateJWT(user), HttpStatus.OK);
@@ -52,7 +48,7 @@ public class UserResource {
     private Map<String, String> generateJWT(User user) {
         long timestamp = System.currentTimeMillis();
         String token = Jwts.builder()
-                .signWith(SignatureAlgorithm.HS256, Constants.API_SECRET_KEY.getBytes(StandardCharsets.UTF_8))
+                .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(Constants.API_SECRET_KEY.getBytes(StandardCharsets.UTF_8)))
                 .setIssuedAt(new Date(timestamp))
                 .setExpiration(new Date(timestamp + Constants.TOKEN_VALIDITY))
                 .claim("user_id", user.getUser_id())

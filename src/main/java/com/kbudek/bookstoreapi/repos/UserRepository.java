@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface UserRepository {
 
-    User create(UUID user_id, String email, String password) throws BSAuthException;
+    User create(UUID user_id, String email, String hashedPassword) throws BSAuthException;
 
     User findByEmailAndPassword(String email, String password) throws BSAuthException;
 

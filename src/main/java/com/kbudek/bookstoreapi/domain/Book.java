@@ -5,7 +5,7 @@ import java.util.UUID;
 public class Book {
 
     private String isbn;
-    private UUID user_id;
+    private UUID author_id;
     private String title;
     private String description;
     private Short publish_year;
@@ -13,9 +13,9 @@ public class Book {
     private String lang;
     private Double price;
 
-    public Book(String isbn, UUID user_id, String title, String description, Short publish_year, String publisher, String lang, Double price) {
+    public Book(String isbn, UUID author_id, String title, String description, Short publish_year, String publisher, String lang, Double price) {
         this.isbn = isbn;
-        this.user_id = user_id;
+        this.author_id = author_id;
         this.title = title;
         this.description = description;
         this.publish_year = publish_year;
@@ -32,12 +32,12 @@ public class Book {
         this.isbn = isbn;
     }
 
-    public UUID getUser_id() {
-        return user_id;
+    public UUID getAuthor_id() {
+        return author_id;
     }
 
-    public void setUser_id(UUID user_id) {
-        this.user_id = user_id;
+    public void setAuthor_id(UUID author_id) {
+        this.author_id = author_id;
     }
 
     public String getTitle() {

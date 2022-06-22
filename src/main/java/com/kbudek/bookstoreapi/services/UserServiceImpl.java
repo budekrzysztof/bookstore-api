@@ -4,6 +4,7 @@ import com.kbudek.bookstoreapi.domain.User;
 import com.kbudek.bookstoreapi.exceptions.BSAuthException;
 import com.kbudek.bookstoreapi.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,14 +25,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerUser(UUID user_id, String email, String password) throws BSAuthException {
-        Pattern pattern = Pattern.compile("^(.+)@(.+)$");
+    public User registerUser(String email, String password) throws BSAuthException {
+
         if(email != null) email = email.toLowerCase();
-        if(!pattern.matcher(email).matches())
+        // compare with email regex
+        if(!(Pattern.compile("^(.+)@(.+)$")).matcher(email).matches())
             throw new BSAuthException("Invalid email format");
-        Integer count = userRepository.getCountByEmail(email);
-        if(count > 0)
+        // check if password doesn't already exist
+        if(userRepository.getCountByEmail(email) > 0)
             throw new BSAuthException("Email address has already been used");
-        return userRepository.create(user_id, email, password);
+        // return new user with generated UUID and hashed password
+        return userRepository.create(UUID.randomUUID(), email, BCrypt.hashpw(password, BCrypt.gensalt(10)));
     }
 }

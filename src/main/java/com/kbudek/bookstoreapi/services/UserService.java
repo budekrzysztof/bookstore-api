@@ -9,5 +9,5 @@ public interface UserService {
 
     User validateUser(String email, String password) throws BSAuthException;
 
-    User registerUser(UUID id, String email, String password) throws BSAuthException;
+    User registerUser(String email, String password) throws BSAuthException;
 }
