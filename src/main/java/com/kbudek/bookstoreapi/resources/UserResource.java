@@ -13,17 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-<<<<<<< Updated upstream
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-=======
 import java.nio.charset.StandardCharsets;
-import java.security.PrivateKey;
-import java.security.interfaces.RSAPrivateKey;
 import java.util.*;
->>>>>>> Stashed changes
 
 @RestController
 @RequestMapping("/api/bookstore")
@@ -56,12 +47,8 @@ public class UserResource {
 
     private Map<String, String> generateJWT(User user) {
         long timestamp = System.currentTimeMillis();
-<<<<<<< Updated upstream
-        String token = Jwts.builder().signWith(SignatureAlgorithm.HS256, Constants.API_SECRET_KEY)
-=======
         String token = Jwts.builder()
                 .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(Constants.API_SECRET_KEY.getBytes(StandardCharsets.UTF_8)))
->>>>>>> Stashed changes
                 .setIssuedAt(new Date(timestamp))
                 .setExpiration(new Date(timestamp + Constants.TOKEN_VALIDITY))
                 .claim("user_id", user.getUser_id())

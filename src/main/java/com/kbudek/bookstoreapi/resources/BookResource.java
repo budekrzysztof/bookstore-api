@@ -20,7 +20,6 @@ public class BookResource {
     @Autowired
     BookService bookService;
 
-
     @GetMapping("/all")
     public ResponseEntity<List<Book>> getAllBooks(HttpServletRequest request) {
         UUID user_id = (UUID) UUID.fromString((String) request.getAttribute("user_id"));
@@ -48,15 +47,12 @@ public class BookResource {
         UUID user_id = UUID.fromString((String) request.getAttribute("user_id"));
 
         UUID author_id = UUID.fromString((String) bookMap.get("author_id"));
-
         String isbn = (String) bookMap.get("isbn");
         String publisher = (String) bookMap.get("publisher");
         String lang = (String) bookMap.get("lang");
         String title = (String) bookMap.get("title");
         String description = (String) bookMap.get("description");
-
-        Integer publish_year_i = (Integer) bookMap.get("publish_year"); // for later take a look at this cast again
-        Short publish_year = publish_year_i.shortValue();
+        Short publish_year = ((Integer) bookMap.get("publish_year")).shortValue();
         Double price = (Double) bookMap.get("price");
 
         Book book = bookService.addBook(isbn, author_id, title, description, publish_year, publisher, lang, price);
