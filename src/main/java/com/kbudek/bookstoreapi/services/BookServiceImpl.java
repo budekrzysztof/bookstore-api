@@ -19,28 +19,27 @@ public class BookServiceImpl implements BookService {
     BookRepository bookRepository;
 
     @Override
-    public List<Book> getAllBooks(UUID user_id) {
-        return bookRepository.findAll(user_id);
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll();
     }
 
     @Override
-    public Book getBookByIsbn(UUID user_id, String isbn) throws BSResourceNotFoundException {
-        return bookRepository.findByIsbn(user_id, isbn);
+    public Book getBookByIsbn(String isbn) throws BSResourceNotFoundException {
+        return bookRepository.findByIsbn(isbn);
     }
 
     @Override
-    public Book addBook(UUID user_id, String isbn, UUID author_id, String title, String description, Short publish_year, String publisher, String lang, Double price) throws BSBadRequestException {
-        return bookRepository.findByIsbn(user_id, bookRepository.create(user_id, isbn, author_id, title, description, publish_year, publisher, lang, price));
+    public Book addBook(String isbn, UUID author_id, String title, String description, Short publish_year, String publisher, String lang, Double price) throws BSBadRequestException {
+        return bookRepository.findByIsbn(bookRepository.create(isbn, author_id, title, description, publish_year, publisher, lang, price));
     }
 
     @Override
-    public void updateBook(UUID user_id, String isbn, Book book) throws BSBadRequestException {
-        bookRepository.update(user_id, isbn, book);
+    public void updateBook(String isbn, Book book) throws BSBadRequestException {
+        bookRepository.update(isbn, book);
     }
 
     @Override
-    public void removeBook(UUID user_id, String isbn) throws BSResourceNotFoundException {
-        this.getBookByIsbn(user_id, isbn);
-        bookRepository.removeByIsbn(user_id, isbn);
+    public void removeBook(String isbn) throws BSResourceNotFoundException {
+        bookRepository.removeByIsbn(isbn);
     }
 }

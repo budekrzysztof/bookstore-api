@@ -18,7 +18,7 @@
     @Repository
     public class UserRepositoryImpl implements UserRepository {
 
-    private static final String SQL_CREATE = "INSERT INTO bs_users(USER_ID, EMAIL, PASSWORD) VALUES(?, ?, ?)";
+    private static final String SQL_CREATE = "INSERT INTO bs_users(user_id, email, password) VALUES(?, ?, ?)";
     private static final String SQL_COUNT_BY_EMAIL = "SELECT COUNT(*) FROM bs_users WHERE email = ?";
     private static final String SQL_FIND_BY_ID = "SELECT user_id, email, password FROM bs_users WHERE user_id = ?";
     private static final String SQL_FIND_BY_EMAIL = "SELECT user_id, email, password FROM bs_users WHERE email = ?";
@@ -27,8 +27,7 @@
     JdbcTemplate jdbcTemplate;
 
     @Override
-    public User create(UUID user_id, String email, String password) throws BSAuthException {
-        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt(10));
+    public User create(UUID user_id, String email, String hashedPassword) throws BSAuthException {
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
@@ -38,7 +37,7 @@
                 ps.setString(3, hashedPassword);
                 return ps;
             }, keyHolder);
-            return findById((UUID) keyHolder.getKeys().get("USER_ID"));
+            return findById((UUID) keyHolder.getKeys().get("user_id"));
         } catch (Exception e) {
             e.printStackTrace();
             throw new BSAuthException("Invalid details. Failed to create an account.");
@@ -68,8 +67,8 @@
     }
 
     final private RowMapper<User> userRowMapper = ((rs, rowNum) -> {
-        return new User((UUID) rs.getObject("USER_ID"),
-               rs.getString("EMAIL"),
-               rs.getString("PASSWORD"));
+        return new User((UUID) rs.getObject("user_id"),
+            rs.getString("email"),
+            rs.getString("password"));
         });
     }

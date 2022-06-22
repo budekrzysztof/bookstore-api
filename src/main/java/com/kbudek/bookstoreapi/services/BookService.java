@@ -9,13 +9,13 @@ import java.util.UUID;
 
 public interface BookService {
 
-    List<Book> getAllBooks(UUID user_id);
+    List<Book> getAllBooks();
 
-    Book getBookByIsbn(UUID user_id, String isbn) throws BSResourceNotFoundException;
+    Book getBookByIsbn(String isbn) throws BSResourceNotFoundException;
 
-    Book addBook(UUID user_id, String isbn, UUID author_id, String title, String description, Short publish_year, String publisher, String lang, Double price) throws BSBadRequestException;
+    Book addBook(String isbn, UUID author_id, String title, String description, Short publish_year, String publisher, String lang, Double price) throws BSBadRequestException;
 
-    void updateBook(UUID user_id, String isbn, Book book) throws BSBadRequestException;
+    void updateBook(String isbn, Book book) throws BSBadRequestException;
 
-    void removeBook(UUID user_id, String isbn) throws BSResourceNotFoundException;
+    void removeBook(String isbn) throws BSResourceNotFoundException;
 }
