@@ -31,7 +31,7 @@ public class BookResource {
     @GetMapping("/{isbn}")
     public ResponseEntity<Book> getBookByIsbn(HttpServletRequest request,
                                               @PathVariable("isbn") String isbn) {
-        UUID user_id = (UUID) UUID.fromString((String) request.getAttribute("user_id"));
+        UUID userId = (UUID) UUID.fromString((String) request.getAttribute("user_id"));
         Book book = bookService.getBookByIsbn(isbn);
         return new ResponseEntity<>(book, HttpStatus.OK);
     }
@@ -39,23 +39,22 @@ public class BookResource {
     @PostMapping("/add")
     public ResponseEntity<Book> addBook(HttpServletRequest request,
                                         @RequestBody Map<String, Object> bookMap) {
-        
         // For printing caller's id but since I only run this locally then it doesn't really works out :(
         // System.out.println("Caller ip: " + request.getRemoteAddr().toString());
 
         // to retrieve caller's id - will be used in future
-        UUID user_id = UUID.fromString((String) request.getAttribute("user_id"));
+        UUID userId = UUID.fromString((String) request.getAttribute("user_id"));
 
-        UUID author_id = UUID.fromString((String) bookMap.get("author_id"));
+        UUID authorId = UUID.fromString((String) bookMap.get("author_id"));
         String isbn = (String) bookMap.get("isbn");
         String publisher = (String) bookMap.get("publisher");
         String lang = (String) bookMap.get("lang");
         String title = (String) bookMap.get("title");
         String description = (String) bookMap.get("description");
-        Short publish_year = ((Integer) bookMap.get("publish_year")).shortValue();
+        Short publishYear = ((Integer) bookMap.get("publish_year")).shortValue();
         Double price = (Double) bookMap.get("price");
 
-        Book book = bookService.addBook(isbn, author_id, title, description, publish_year, publisher, lang, price);
+        Book book = bookService.addBook(isbn, authorId, title, description, publishYear, publisher, lang, price);
 
         return new ResponseEntity<>(book, HttpStatus.CREATED);
     }
@@ -64,7 +63,7 @@ public class BookResource {
     public ResponseEntity<Map<String, Boolean>> updateCategory(HttpServletRequest request,
                                                                @PathVariable("isbn") String isbn,
                                                                @RequestBody Book book) {
-        UUID user_id = UUID.fromString((String) request.getAttribute("user_id"));
+        UUID userId = UUID.fromString((String) request.getAttribute("user_id"));
         bookService.updateBook(isbn, book);
         Map<String, Boolean> map = new HashMap<>();
         map.put("success", true);

@@ -41,16 +41,16 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public String create(String isbn, UUID author_id, String title, String description, Short publish_year, String publisher, String lang, Double price) throws BSBadRequestException {
+    public String create(String isbn, UUID authorId, String title, String description, Short publishYear, String publisher, String lang, Double price) throws BSBadRequestException {
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, isbn);
-                ps.setObject(2, author_id);
+                ps.setObject(2, authorId);
                 ps.setString(3, title);
                 ps.setString(4, description);
-                ps.setShort(5, publish_year);
+                ps.setShort(5, publishYear);
                 ps.setString(6, publisher);
                 ps.setString(7, lang);
                 ps.setDouble(8, price);

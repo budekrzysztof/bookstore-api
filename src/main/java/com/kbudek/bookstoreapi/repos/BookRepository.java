@@ -13,7 +13,7 @@ public interface BookRepository {
 
     Book findByIsbn(String isbn) throws BSResourceNotFoundException;
 
-    String create(String isbn, UUID author_id, String title, String description, Short publish_year, String publisher, String lang, Double price) throws BSBadRequestException;
+    String create(String isbn, UUID authorId, String title, String description, Short publishYear, String publisher, String lang, Double price) throws BSBadRequestException;
 
     void update(String isbn, Book book) throws BSBadRequestException;
 
