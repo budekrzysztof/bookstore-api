@@ -27,12 +27,12 @@
     JdbcTemplate jdbcTemplate;
 
     @Override
-    public User create(UUID user_id, String email, String hashedPassword) throws BSAuthException {
+    public User create(UUID userId, String email, String hashedPassword) throws BSAuthException {
         try {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
-                ps.setObject(1, user_id);
+                ps.setObject(1, userId);
                 ps.setString(2, email);
                 ps.setString(3, hashedPassword);
                 return ps;
@@ -62,8 +62,8 @@
     }
 
     @Override
-    public User findById(UUID user_id) {
-        return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, userRowMapper, user_id);
+    public User findById(UUID userId) {
+        return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, userRowMapper, userId);
     }
 
     final private RowMapper<User> userRowMapper = ((rs, rowNum) -> {

@@ -51,7 +51,7 @@ public class UserResource {
                 .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(Constants.API_SECRET_KEY.getBytes(StandardCharsets.UTF_8)))
                 .setIssuedAt(new Date(timestamp))
                 .setExpiration(new Date(timestamp + Constants.TOKEN_VALIDITY))
-                .claim("user_id", user.getUser_id())
+                .claim("user_id", user.getUserId())
                 .claim("email", user.getEmail())
                 .claim("password", user.getPassword())
                 .compact();
